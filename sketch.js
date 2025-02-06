@@ -15,16 +15,22 @@ function setup() {
   textSize(40)
   textAlign(LEFT, TOP)
 
-  let wb;
   for (let i = 0; i < f_answers.length; i++) {
+    let wb;
     if(i % 2 == 0) {
-      wb = new WordBlock(f_answers[i], 40, 600+(i*size))
-      wb.draw()
+      wb = new WordBlock(f_answers[i])
+      wb.draw(40, 600+(i*size))
+      wordBlocks.push(wb)
       continue
     }
-    wb = new WordBlock(f_answers[i], 40+(i*size), 40)
+    wb = new WordBlock(f_answers[i])
     wb.toggleOrientation()
-    wb.draw()
+    wb.draw(40+(i*size), 40)
+    wordBlocks.push(wb)
   }
-  wordBlocks.push(wb)
+  console.log(wordBlocks[0].ans)
+  console.log(wordBlocks[1].ans)
+  if(wordBlocks[0].connect(wordBlocks[1])) {
+    console.log("Connected")
+  }
 }
