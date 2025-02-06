@@ -20,6 +20,12 @@ class WordBlock {
 	draw(x, y) {
 		this.x = x
 		this.y = y
+		if(this.children != 0) {
+			this.orientation = "Horizontal"
+			this.y = y+this.children[0].cross_points[this.ans]*size
+			this.children[0].x = x+this.cross_points[this.children[0].ans]*size
+			this.children[0].orientation = "Vertical"
+		}
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.orientation == "Horizontal") {
 				drawBlock(this.x, this.y, i, 0, this.ans[i].toUpperCase())
@@ -32,16 +38,14 @@ class WordBlock {
 	// return true or false
 	// if it is possible to connect the blocks
 	connect(block) {
-		this.cross_points[block.ans] = []
-		block.cross_points[this.ans] = []
 		for (let i = 0; i < this.ans.length; i++) {
 			for (let j = 0; j < block.ans.length; j++) {
 				if(this.ans[i] == block.ans[j]) {
 					//May need boths cross points...
 					//and now comes the question of how to store them
 					//in the best way
-					this.cross_points[block.ans].push(i)
-					block.cross_points[this.ans].push(j)
+					this.cross_points[block.ans] = i
+					block.cross_points[this.ans] = j
 				}
 			}
 		}
