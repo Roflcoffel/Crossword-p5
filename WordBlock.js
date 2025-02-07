@@ -1,8 +1,11 @@
 class WordBlock {
-	constructor(ans) {
+	constructor(ans, id, hidden) {
+		this.id = id; // used when hidden so we know which question this answer is connected to.
 		this.ans = ans;
+		
 		this.x = 0
 		this.y = 0
+		this.hidden = hidden
 
 		this.orientation = "Horizontal";
 		this.used_points = []; // Keeps track of all used points in a wordblock
@@ -13,13 +16,17 @@ class WordBlock {
 		this.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal";
 	}
 
+	toggleHidden() {
+		this.hidden = !this.hidden
+	}
+
 	draw(x, y) {
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.orientation == "Horizontal") {
-				drawBlock(this.x+x, this.y+y, i, 0, this.ans[i].toUpperCase())
+				drawBlock(this.x+x, this.y+y, i, 0, this.ans[i].toUpperCase(), this.id, this.hidden)
 			}
 			else {
-				drawBlock(this.x+x, this.y+y, 0, i, this.ans[i].toUpperCase())
+				drawBlock(this.x+x, this.y+y, 0, i, this.ans[i].toUpperCase(), this.id, this.hidden)
 			}
 		}
 	}
@@ -58,13 +65,18 @@ class WordBlock {
 	}
 }
 
-function drawBlock(x, y, x_i, y_i, letter) {
+function drawBlock(x, y, x_i, y_i, letter, id, hidden) {
 	square(x+(x_i*size),y+(y_i*size),size)
 	fill(0,0,0)
-	text(
-		letter, 
-		x+(x_i*size)+txt_offset, 
-		y+(y_i*size)+txt_offset
-	)
+	textSize(40)
+	if(!hidden) {
+		text(
+			letter, 
+			x+(x_i*size)+txt_offset, 
+			y+(y_i*size)+txt_offset
+		)
+	}
+	textSize(15)
+	text(id,x+5,y+5)
 	noFill();
 }
