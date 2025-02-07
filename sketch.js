@@ -8,29 +8,26 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 1200);
+  createCanvas(1920, 1080);
   
   noFill();
 
   textSize(40)
   textAlign(LEFT, TOP)
 
-  for (let i = 0; i < 2; i++) {
-    let wb;
-    if(i % 2 == 0) {
-      wb = new WordBlock(f_answers[i])
-      //wb.draw(40, 600+(i*size))
-      wordBlocks.push(wb)
-      continue
-    }
+  for (let i = 0; i < f_answers.length; i++) {
     wb = new WordBlock(f_answers[i])
-    wb.toggleOrientation()
-    //wb.draw(40+(i*size), 40)
     wordBlocks.push(wb)
   }
+
+  //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
   if(wordBlocks[0].connect(wordBlocks[1])) {
-    wordBlocks[1].draw(100,100)
-    wordBlocks[0].draw(100,100)
-    console.log("Connected")
+    console.log("Connected 1")
   }
+  if(wordBlocks[1].connect(wordBlocks[2])) {
+    console.log("Connected 2")
+  }
+  wordBlocks[0].draw(200,400)
+  wordBlocks[1].draw(200,400)
+  wordBlocks[2].draw(200,400)
 }

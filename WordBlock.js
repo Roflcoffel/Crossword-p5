@@ -1,9 +1,9 @@
 class WordBlock {
 	constructor(ans) {
 		this.ans = ans;
-		this.x = 0;
-		this.y = 0;
-		
+		this.x = 0
+		this.y = 0
+
 		this.orientation = "Horizontal";
 		this.cross_points = {};
 		this.invalid_points = []; //if a cross point is at 1, that makes 0 and 2 invalid points
@@ -18,44 +18,38 @@ class WordBlock {
 	}
 
 	draw(x, y) {
-		this.x = x
-		this.y = y
-		if(this.children != 0) {
-			this.orientation = "Horizontal"
-			this.y = y+this.children[0].cross_points[this.ans]*size
-			this.children[0].x = x+this.cross_points[this.children[0].ans]*size
-			this.children[0].orientation = "Vertical"
-		}
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.orientation == "Horizontal") {
-				drawBlock(this.x, this.y, i, 0, this.ans[i].toUpperCase())
+				drawBlock(this.x+x, this.y+y, i, 0, this.ans[i].toUpperCase())
 			}
 			else {
-				drawBlock(this.x, this.y, 0, i, this.ans[i].toUpperCase())
+				drawBlock(this.x+x, this.y+y, 0, i, this.ans[i].toUpperCase())
 			}
 		}
 	}
 	// return true or false
-	// if it is possible to connect the blocks
+	// if it is possible to connect the blocks, returns true on the first match
 	connect(block) {
 		for (let i = 0; i < this.ans.length; i++) {
 			for (let j = 0; j < block.ans.length; j++) {
 				if(this.ans[i] == block.ans[j]) {
-					//May need boths cross points...
-					//and now comes the question of how to store them
-					//in the best way
-					this.cross_points[block.ans] = i
-					block.cross_points[this.ans] = j
+					block.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal"
+					if(block.orientation == "Horizontal") {
+						//this now works but my brain needed to melt in order to get it to work
+						//need to add the previous connected blocks position i think
+						//otherwise we start over at 0x and 0y.
+						block.x = this.x-j*size
+						block.y = this.y+i*size
+					} else {
+						block.y = this.y-j*size
+						block.x = this.x+i*size
+					}
+					this.children.push(block)
+					return true
 				}
 			}
 		}
-
-		if(this.cross_points.length == 0) {
-			return false
-		}
-		
-		this.children.push(block)
-		return true
+		return false
 	}
 }
 
