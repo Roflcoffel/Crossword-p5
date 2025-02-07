@@ -20,14 +20,24 @@ function setup() {
     wordBlocks.push(wb)
   }
 
+  let tx = 200
+  let ty = 400
   //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
-  if(wordBlocks[0].connect(wordBlocks[1])) {
-    console.log("Connected 1")
+  
+  connectBlock(0,1)
+  connectBlock(0,4)
+  connectBlock(0,8)
+  connectBlock(1,2)
+  connectBlock(2,3)
+  
+  for (let i = 0; i < 5; i++) {
+    wordBlocks[i].draw(tx,ty)
   }
-  if(wordBlocks[1].connect(wordBlocks[2])) {
-    console.log("Connected 2")
+  wordBlocks[8].draw(tx,ty)
+}
+
+function connectBlock(parent_i, child_i) {
+  if(wordBlocks[parent_i].connect(wordBlocks[child_i])) {
+    console.log("Connected!")
   }
-  wordBlocks[0].draw(200,400)
-  wordBlocks[1].draw(200,400)
-  wordBlocks[2].draw(200,400)
 }
