@@ -23,15 +23,16 @@ function setup() {
   let tx = 200
   let ty = 400
   //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
-  
   connectBlock("arbetsinriktad","fontän")
   connectBlock("arbetsinriktad","struktur")
   connectBlock("arbetsinriktad","nyk")
+  connectBlock("arbetsinriktad","fontänflödet")
   connectBlock("fontän","ohälsa")
   connectBlock("ohälsa","hus")
+  connectBlock("hus", "ängelholmen")
   
   for (const block in wordBlocks) {
-    if(wordBlocks[block].id < 5) {
+    if(wordBlocks[block].id < 8) {
       wordBlocks[block].draw(tx,ty)
     }
   }
@@ -43,7 +44,7 @@ function setup() {
       text(i + ". " + f_questions[i], tx, ty+(i*20)+420)
     }
     else {
-      text(i + ". " + f_questions[i], tx+500, ty+((i-1)*20)+420)
+      text(i + ". " + f_questions[i], tx+400, ty+((i-1)*20)+420)
     }
   }
   noFill();
