@@ -1,8 +1,7 @@
 class WordBlock {
 	constructor(ans, id, hidden) {
-		this.id = id; // used when hidden so we know which question this answer is connected to.
+		this.id = id;
 		this.ans = ans;
-		
 		this.x = 0
 		this.y = 0
 		this.hidden = hidden
@@ -62,6 +61,33 @@ class WordBlock {
 			}
 		}
 		return false
+	}
+
+	//Connects at a specific letter
+	connectAt(block, letter) {
+		let i = this.ans.indexOf(letter)
+		let j = block.ans.indexOf(letter)
+		if(i == -1 || j == -1) {
+			console.log("Could not find the letter!")
+			return false
+		}
+
+		if(this.used_points.some(v => v == i)) {
+			return false
+		}
+
+		block.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal"
+		if(block.orientation == "Horizontal") {
+			block.x = this.x-j*size
+			block.y = this.y+i*size
+		} else {
+			block.y = this.y-j*size
+			block.x = this.x+i*size
+		}
+		this.used_points.push(i-1,i,i+1)
+		block.used_points.push(j-1,j,j+1)
+		this.children.push(block)
+		return true
 	}
 }
 
