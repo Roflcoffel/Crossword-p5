@@ -89,6 +89,17 @@ class WordBlock {
 		this.children.push(block)
 		return true
 	}
+
+	// Checks if a point is within the Wordblock
+	// want to return to index of which letter we click on also with this
+	// we should be able to loop x with x+=size in the for loop.
+	// and then check which one it is inside of.
+	isPointInWordBlock(point) {
+		let x_offset = this.orientation == "Horizontal" ? (size*this.ans.length) : size
+		let y_offset = this.orientation == "Vertical" ? (size*this.ans.length) : size
+		
+		return (this.x < point.x < this.x+x_offset && this.y < point.y < this.y+y_offset)
+	}
 }
 
 function drawBlock(x, y, x_i, y_i, letter, id, hidden) {

@@ -70,9 +70,9 @@ function connectBlock(parent_ans, child_ans, letter = "") {
       console.log("Connected at " + letter)
     }
   }
-  
 }
 
+// mx > x && mx < x+w && my > y && my < y+h
 function isInBox(mx, my, x, y, w, h) {
-  return mx > x && mx < x+w && my > y && my < y+h
+  return x < mx < x+w && y < my < y+h
 }
