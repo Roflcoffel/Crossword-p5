@@ -20,12 +20,14 @@ class WordBlock {
 
 	toggleOrientation() {
 		this.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal";
+		//May need to toggle the childrens orientation also
 	}
 
 	toggleHidden() {
 		this.hidden = !this.hidden
 	}
 
+	//Should e replaced  by block_draw
 	draw(x, y) {
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.orientation == "Horizontal") {
@@ -47,7 +49,7 @@ class WordBlock {
 	block_connect(other_wblock) {
 		other_block.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal"
 		for (let i = 0; i < this.blocks[this.orientation].length; i++) {
-			if(this.used_points.some(v => v == i)) {
+			if(this.used_points.some(v => v == this.blocks[this.orientation][i].index)) {
 				console.log("Skipped", i)
 				continue
 			}
@@ -56,7 +58,7 @@ class WordBlock {
 			for (let j = 0; j < other_wblock.blocks[other_wblock.orientation].length; j++) {
 				let h_other = other_wblock.blocks["Horizontal"][j];
 				let v_other = other_wblock.blocks["Vertical"][j]
-				if(block.letter == other_wblock.blocks[other_wblock.orientation].letter) {
+				if(block.letter == h_other.letter) {
 					//Horizontal
 					h_other.x = this.x-j*size
 					h_other.y = this.y+i*size
@@ -75,6 +77,7 @@ class WordBlock {
 
 	// return true or false
 	// if it is possible to connect the blocks, returns true on the first match
+	// Should be replaced by block_connect
 	connect(block) {
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.used_points.length != 0) {
@@ -108,6 +111,7 @@ class WordBlock {
 	}
 
 	//Connects at a specific letter
+	//Rewrite using the blocks object.
 	connectAt(block, letter) {
 		let i = this.ans.indexOf(letter)
 		let j = block.ans.indexOf(letter)
