@@ -23,13 +23,15 @@ function setup() {
   let tx = 100
   let ty = 400
   //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
+  //the length of a word divided by 2, gives us how many max possible connected word we can have.
+  //if we reach this number when trying to connect block or run out of words we are done.
   connectBlock("arbetsinriktad","fontän")
   connectBlock("arbetsinriktad","nyk")
   connectBlock("arbetsinriktad","flödet","d")
   connectBlock("fontän","ohälsa")
   connectBlock("ohälsa","hus")
   connectBlock("hus", "ängelholmen")
-  
+
   for (const block in wordBlocks) {
     if(wordBlocks[block].id < 7) {
       wordBlocks[block].draw(tx,ty)
