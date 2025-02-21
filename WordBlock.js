@@ -7,12 +7,6 @@ class WordBlock {
 		this.hidden = hidden
 
 		this.orientation = "Horizontal";
-		this.blocks = {"Horizontal": [], "Vertical": []}
-
-		for (let i = 0; i < ans.length; i++) {
-			this.blocks["Horizontal"].push(new Block(ans[i].toUpperCase(), i, this.x+(i*size), this.y))
-			this.blocks["Vertical"].push(new Block(ans[i].toUpperCase(), i, this.x, this.y+(i*size)))
-		}
 		
 		this.used_points = []; // Keeps track of all used points in a wordblock
 		this.children = []; //list of WordBlock object that are connected to this block.
@@ -37,42 +31,6 @@ class WordBlock {
 				drawBlock(this.x+x, this.y+y, 0, i, this.ans[i].toUpperCase(), this.id, this.hidden)
 			}
 		}
-	}
-
-	block_draw(x, y) {
-		for (let i = 0; i < this.blocks[this.orientation].length; i++) {
-			let block = this.blocks[this.orientation][i]
-			block.draw(x, y, this.hidden)
-		}
-	}
-
-	block_connect(other_wblock) {
-		other_block.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal"
-		for (let i = 0; i < this.blocks[this.orientation].length; i++) {
-			if(this.used_points.some(v => v == this.blocks[this.orientation][i].index)) {
-				console.log("Skipped", i)
-				continue
-			}
-			let block = this.blocks[this.orientation][i];
-			
-			for (let j = 0; j < other_wblock.blocks[other_wblock.orientation].length; j++) {
-				let h_other = other_wblock.blocks["Horizontal"][j];
-				let v_other = other_wblock.blocks["Vertical"][j]
-				if(block.letter == h_other.letter) {
-					//Horizontal
-					h_other.x = this.x-j*size
-					h_other.y = this.y+i*size
-					//Vertical
-					v_other.x = this.x+i*size
-					v_other.y = this.y-j*size
-				}
-				this.used_points.push(i-1,i,i+1)
-				other_wblock.used_points.push(j-1,j,j+1)
-				this.children.push(other_wblock)
-				return true
-			}
-		}
-		return false
 	}
 
 	// return true or false
