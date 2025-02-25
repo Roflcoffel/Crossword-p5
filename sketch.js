@@ -3,6 +3,9 @@ let qna_data = {}
 const size = 64
 const txt_offset = 15
 
+let tx = 100
+let ty = 400
+
 function preload() {
   qna_data = loadJSON('assets/qna_data.json');
 }
@@ -20,8 +23,6 @@ function setup() {
     i += 1
   }
 
-  let tx = 100
-  let ty = 400
   //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
   //the length of a word divided by 2, gives us how many max possible connected word we can have.
   //if we reach this number when trying to connect block or run out of words we are done.
@@ -57,8 +58,20 @@ function setup() {
   noFill();
 }
 
-function draw() {
-
+// We actually only need to look at block, this is not sudoku, so
+// we do not want to enter in letter by letter, which means we can
+// change the isPointInWordBlock, to actually only check the whole wordblock
+// instead of each slot in the wordblock
+// we should then highlight the block with a color so the user knows what is selected
+// and when highlighten only then does the keyboard respond.
+// we should show what the users times either inside of the blocks or somewhere else
+// on the screen.
+function mousePressed() {
+  for (const block in wordBlocks) {
+    if(wordBlocks[block].id < 1) {
+      console.log(wordBlocks[block].isPointInWordBlock(mouseX-tx, mouseY-ty))
+    }
+  }
 }
 
 function connectBlock(parent_ans, child_ans, letter = "") {
@@ -72,9 +85,4 @@ function connectBlock(parent_ans, child_ans, letter = "") {
       console.log("Connected at " + letter)
     }
   }
-}
-
-// mx > x && mx < x+w && my > y && my < y+h
-function isInBox(mx, my, x, y, w, h) {
-  return x < mx < x+w && y < my < y+h
 }
