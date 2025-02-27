@@ -28,7 +28,7 @@ function setup() {
   //if we reach this number when trying to connect block or run out of words we are done.
   connectBlock("arbetsinriktad","fontän")
   connectBlock("arbetsinriktad","nyk")
-  connectBlock("arbetsinriktad","flödet","d")
+  connectBlock("arbetsinriktad","fontänflödet")
   connectBlock("fontän","ohälsa")
   connectBlock("ohälsa","hus")
   connectBlock("hus", "ängelholmen")
