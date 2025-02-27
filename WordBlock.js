@@ -7,19 +7,16 @@ class WordBlock {
 		this.hidden = hidden
 
 		this.orientation = "Horizontal";
-		
-		this.used_points = []; // Keeps track of all used points in a wordblock
-		this.children = []; //list of WordBlock object that are connected to this block.
+		this.used_letters = []; // Keeps track of all used letters with the letter index in a wordblock
 	}
 	
-	// Returns the opposite orientation of the wordblock passed in.
-	getOppositeOrientation(wordblock) {
-		return wordblock.orientation == "Horizontal" ? "Vertical" : "Horizontal";
+	// sets the opposite orientation of the wordblock passed in.
+	setOppositeOrientation(wordblock) {
+		this.orientation = wordblock.orientation == "Horizontal" ? "Vertical" : "Horizontal";
 	}
 
 	toggleOrientation() {
 		this.orientation = this.orientation == "Horizontal" ? "Vertical" : "Horizontal";
-		//May need to toggle the childrens orientation also
 	}
 
 	toggleHidden() {
@@ -42,21 +39,20 @@ class WordBlock {
 	// if it is possible to connect the blocks, returns true on the first match
 	connect(block) {
 		for (let i = 0; i < this.ans.length; i++) {
-			if(this.used_points.length != 0) {
-				if(this.used_points.some(v => v == i)) {
+			if(this.used_letters.length != 0) {
+				if(this.used_letters.some(v => v == i)) {
 					console.log("Skipped", i)
 					continue
 				}
 			}
 			for (let j = 0; j < block.ans.length; j++) {
 				if(this.ans[i] == block.ans[j]) {
-					block.orientation = block.getOppositeOrientation(this)
+					block.setOppositeOrientation(this)
 					block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
 					block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
 
-					this.used_points.push(i-1,i,i+1)
-					block.used_points.push(j-1,j,j+1)
-					this.children.push(block)
+					this.used_letters.push(i-1,i,i+1)
+					block.used_letters.push(j-1,j,j+1)
 					return true
 				}
 			}
@@ -73,16 +69,15 @@ class WordBlock {
 			return false
 		}
 
-		if(this.used_points.some(v => v == i)) {
+		if(this.used_letters.some(v => v == i)) {
 			return false
 		}
 
-		block.orientation = block.getOppositeOrientation(this)
+		block.setOppositeOrientation(this)
 		block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
 		block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
-		this.used_points.push(i-1,i,i+1)
-		block.used_points.push(j-1,j,j+1)
-		this.children.push(block)
+		this.used_letters.push(i-1,i,i+1)
+		block.used_letters.push(j-1,j,j+1)
 		return true
 	}
 
