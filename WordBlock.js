@@ -14,7 +14,7 @@ class WordBlock {
 	
 	// Returns the opposite orientation of the wordblock passed in.
 	getOppositeOrientation(wordblock) {
-		this.orientation = wordblock.orientation == "Horizontal" ? "Vertical" : "Horizontal";
+		return wordblock.orientation == "Horizontal" ? "Vertical" : "Horizontal";
 	}
 
 	toggleOrientation() {
@@ -30,7 +30,7 @@ class WordBlock {
 		for (let i = 0; i < this.ans.length; i++) {
 			let x_offset = this.orientation == "Horizontal" ? i*size : 0
 			let y_offset = this.orientation == "Vertical" ? i*size : 0
-			drawBlock(this.x+x+x_offset, this.y+y+y_offset, this.ans[i].toUpperCase(), this.id, this.hidden)
+			drawBlock(this.x+x+x_offset, this.y+y+y_offset, this.ans[i].toUpperCase(), this.hidden)
 			if(i == 0) {
 				textSize(15)
 				text(this.id,this.x+x+x_offset+5,this.y+y+y_offset+5)
@@ -50,7 +50,7 @@ class WordBlock {
 			}
 			for (let j = 0; j < block.ans.length; j++) {
 				if(this.ans[i] == block.ans[j]) {
-					block.getOppositeOrientation(this)
+					block.orientation = block.getOppositeOrientation(this)
 					block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
 					block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
 
@@ -65,7 +65,6 @@ class WordBlock {
 	}
 
 	//Connects at a specific letter
-	//Rewrite using the blocks object.
 	connectAt(block, letter) {
 		let i = this.ans.indexOf(letter)
 		let j = block.ans.indexOf(letter)
@@ -78,7 +77,7 @@ class WordBlock {
 			return false
 		}
 
-		block.getOppositeOrientation(this)
+		block.orientation = block.getOppositeOrientation(this)
 		block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
 		block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
 		this.used_points.push(i-1,i,i+1)
@@ -89,32 +88,18 @@ class WordBlock {
 
 	// Checks if a point is within the Wordblock.
 	isPointInWordBlock(point_x, point_y) {
-		let isWithin = false
+		let x = this.orientation == "Horizontal" ? this.ans.length*size : size
+		let y = this.orientation == "Vertical" ? this.ans.length*size : size
 
-		//print("Mouse: ", point_x, point_y)
-		for (let i = 0; i < this.ans.length; i++) {
-			let x = this.orientation == "Horizontal" ? i*size : 0
-			let y = this.orientation == "Vertical" ? i*size : 0
-
-			//print("X, Y: ", this.x+x_offset, this.y+y_offset)
-			isWithin = this.x+x < point_x && point_x < this.x+x+size &&
-					   this.y+y < point_y && point_y < this.y+y+size
-
-			if(isWithin) return this.ans[i]
-		}
-		return isWithin
+		return this.x < point_x && point_x < this.x+x && this.y < point_y && point_y < this.y+y
 	}
 }
 
-function drawBlock(x, y, letter, id, hidden) {
+function drawBlock(x, y, letter, hidden) {
 	square(x,y,size)
 	fill(0,0,0)
 	textSize(40)
 	if(!hidden) {
-		text(
-			letter, 
-			x+txt_offset, 
-			y+txt_offset
-		)
+		text(letter,x+txt_offset,y+txt_offset)
 	}
 }

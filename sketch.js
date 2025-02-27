@@ -34,9 +34,7 @@ function setup() {
   connectBlock("hus", "ängelholmen")
 
   for (const block in wordBlocks) {
-    if(wordBlocks[block].id < 7) {
-      wordBlocks[block].draw(tx,ty)
-    }
+    wordBlocks[block].draw(tx,ty)
   }
 
   fill(0,0,0)
@@ -58,18 +56,10 @@ function setup() {
   noFill();
 }
 
-// We actually only need to look at block, this is not sudoku, so
-// we do not want to enter in letter by letter, which means we can
-// change the isPointInWordBlock, to actually only check the whole wordblock
-// instead of each slot in the wordblock
-// we should then highlight the block with a color so the user knows what is selected
-// and when highlighten only then does the keyboard respond.
-// we should show what the users times either inside of the blocks or somewhere else
-// on the screen.
 function mousePressed() {
   for (const block in wordBlocks) {
-    if(wordBlocks[block].id < 1) {
-      console.log(wordBlocks[block].isPointInWordBlock(mouseX-tx, mouseY-ty))
+    if(wordBlocks[block].isPointInWordBlock(mouseX-tx, mouseY-ty)) {
+      console.log("Highlight: ", wordBlocks[block].ans)
     }
   }
 }
