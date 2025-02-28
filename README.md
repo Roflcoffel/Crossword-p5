@@ -10,7 +10,7 @@ to create crosswords for their digital magazine and website.
 
 ## How to run / use
 this project uses p5.js, so the simplest way to run is using the p5.js
-web editor, here is a link to the project: [Web Editor]("https://editor.p5js.org/Roflcoffel/sketches/b54mSz94V")
+web editor, here is a link to the project: [p5.js Web Editor](https://editor.p5js.org/Roflcoffel/sketches/b54mSz94V)
 
 go to the file assets/qna_data.json and add your own answers, click the run
 button in the editor, and if you provided enough answers an image will be
