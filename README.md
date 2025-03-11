@@ -5,6 +5,12 @@ Tries to generates a crossword, based on a wordlist "qna_data.json" file.
 - does not generate a gridstyle crossword.
 - does not automatically save the canvas.
 
+TODO:
+- add a manual mode, were in the canvas one selects words and from that selection a crossword is generated.
+- a way to automatically create the crossword, do not rely on the "connectBlock" function.
+- add labels above vertical and horizontal words.
+- add a theme at the top which also serves as a hint for the crossword.
+
 This project is meant for Nyköpings Fountain House, and will be used
 to create crosswords for their digital magazine and website.
 
