@@ -3,15 +3,16 @@ let qna_data = {}
 const size = 64
 const txt_offset = 15
 
+//Crossword Start Position
 let tx = 100
-let ty = 400
+let ty = 300
 
 function preload() {
   qna_data = loadJSON('assets/qna_data.json');
 }
 
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(1920, 1300);
   
   noFill();
   textAlign(LEFT, TOP)
@@ -23,16 +24,21 @@ function setup() {
     i += 1
   }
 
-  //if we cannot connect, cycle the wordBlocks array using splice(index,1) and then push it back at the end.
-  //the length of a word divided by 2, gives us how many max possible connected word we can have.
-  //if we reach this number when trying to connect block or run out of words we are done.
   connectBlock("arbetsinriktad","fontän")
   connectBlock("arbetsinriktad","nyk")
   connectBlock("arbetsinriktad","fontänflödet")
+  connectBlock("arbetsinriktad","riktlinjer")
+  connectBlock("riktlinjer","redaktion","e")
+  connectBlock("riktlinjer","kul","l")
   connectBlock("fontän","ohälsa")
   connectBlock("ohälsa","hus")
   connectBlock("hus", "ängelholmen")
+  connectBlock("fontänflödet","nybesök")
+  connectBlock("nybesök","reg")
+  connectBlock("fontänflödet","riksförbund","ö")
+  connectBlock("fontänflödet","enhetsmöte","e")
 
+  // Draw Crossword
   for (const block in wordBlocks) {
     wordBlocks[block].draw(tx,ty)
   }
@@ -40,20 +46,28 @@ function setup() {
   fill(0,0,0)
   textSize(30)
   
-  i = -1; //Starts at -1 so i can count before the mod operation but also
-          //count the questions with None in them
+  // Draw Questions
+  drawQuestions(tx+1000,ty-400)
+  noFill();
+}
+
+function drawQuestions(x, y) {
+  i = -1;
+  // Vertical
+  text("Lodrätt", x, y-50+250)
+  // Horizontal
+  text("Vågrätt", x+400, y-50+250)
   for (const answer in qna_data) {
     i += 1
     let question = qna_data[answer]
     if(question == "None") continue
     if(i % 2 == 0) {
-      text(i + ". " + question, tx, ty+(i*20)+250)
+      text(i + ". " + question, x, y+(i*20)+250)
     }
     else {
-      text(i + ". " + question, tx+350, ty+((i-1)*20)+250)
+      text(i + ". " + question, x+400, y+((i-1)*20)+250)
     }
   }
-  noFill();
 }
 
 function mousePressed() {
