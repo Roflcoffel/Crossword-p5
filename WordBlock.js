@@ -5,6 +5,7 @@ class WordBlock {
 		this.x = 0
 		this.y = 0
 		this.hidden = hidden
+		this.connected = false
 
 		this.orientation = "Horizontal";
 		this.used_letters = []; // Keeps track of all used letters with the letter index in a wordblock
@@ -37,7 +38,9 @@ class WordBlock {
 	}
 
 	// if it is possible to connect the blocks, returns true on the first match
-	connect(block) {
+	// skip, is a number, which indicates how many correct matches to skip
+	// an example of when to skip is if we have the same letter and want to connect it at the end.
+	connect(block, skip) {
 		for (let i = 0; i < this.ans.length; i++) {
 			if(this.used_letters.length != 0) {
 				if(this.used_letters.some(v => v == i)) {
@@ -47,13 +50,19 @@ class WordBlock {
 			}
 			for (let j = 0; j < block.ans.length; j++) {
 				if(this.ans[i] == block.ans[j]) {
-					block.setOppositeOrientation(this)
-					block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
-					block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
+					if(skip == 0) {		
+						block.setOppositeOrientation(this)
+						block.x = block.orientation == "Horizontal" ? this.x-j*size : this.x+i*size
+						block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
 
-					this.used_letters.push(i-1,i,i+1)
-					block.used_letters.push(j-1,j,j+1)
-					return true
+						this.used_letters.push(i-1,i,i+1)
+						block.used_letters.push(j-1,j,j+1)
+
+						this.connected = true
+						block.connected = true
+						return true
+					}
+					skip = skip - 1
 				}
 			}
 		}
@@ -78,6 +87,10 @@ class WordBlock {
 		block.y = block.orientation == "Horizontal" ? this.y+i*size : this.y-j*size
 		this.used_letters.push(i-1,i,i+1)
 		block.used_letters.push(j-1,j,j+1)
+
+		this.connected = true
+		block.connected = true
+
 		return true
 	}
 
