@@ -7,7 +7,7 @@ class WordBlock {
 		this.hidden = hidden
 		this.connected = false
 
-		this.orientation = "Horizontal";
+		this.orientation = "Vertical";
 		this.used_letters = []; // Keeps track of all used letters with the letter index in a wordblock
 	}
 	
