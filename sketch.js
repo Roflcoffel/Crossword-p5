@@ -9,6 +9,13 @@ const txt_offset = 15
 
 let hide_words = true
 
+//Global Variable Input Field 
+let answer
+
+// Screen size, this includes the scrollbar and border.
+let screen_w = window.innerWidth
+let screen_h = window.innerHeight
+
 //Crossword Start Position
 let tx = 650
 let ty = 500
@@ -56,40 +63,7 @@ function setup() {
   connectBlock("styrelsen", "städ")
 
   // Draw Crossword
-  for (const block in wordBlocks) {
-    if (wordBlocks[block].connected) {
-      wordBlocks[block].draw(tx,ty)
-    }
-  }
-
-  fill(0,0,0)
-  textSize(30)
-
-  answer = createInput()
-  answer.style('font-size:30px')
-  answer.position(50,950)
-  answer.size(300,30)
-  answer.changed(function () {
-    // Want to make sure that the first character is a number then a space
-    // if not display a message under the box.
-
-    // when a number is enter see if its valid, exist in the crossword.
-    // if not display a message under the box that the number is out of range.
-
-    // if a valid number is entered highlight the wordbox that correspond to that number.
-    // and display each letter in those boxes.
-
-    // if enter is pressed this should indicate a submit and clear the textbox but not
-    // the letters entered in the crossword.
-  })
-
-  // if the inuput method does not work well try to create your own input, with clicking
-  // on a line in a crossword it highlights the wordbox, and then one enter inputmode
-  // where all keyinputs now go directly to the highlighted crossword.
-
-  // Draw Questions
-  drawQuestions(qx,qy)
-  noFill();
+  redrawBoard()
 }
 
 function drawQuestions(x, y) {
@@ -111,12 +85,55 @@ function drawQuestions(x, y) {
   }
 }
 
+function redrawBoard() {
+  background(255,255,255,0)
+  for (const block in wordBlocks) {
+    if (wordBlocks[block].connected) {
+      wordBlocks[block].draw(tx,ty)
+    }
+  }
+
+  fill(0,0,0)
+  textSize(30)
+
+  answer = newInput(screen_w-500, 40, 300, 30)
+
+  // Draw Questions
+  drawQuestions(qx,qy)
+  noFill();
+}
+
+function keyPressed() {
+  //ASCII Carriage Return
+  let ans = answer.value()
+  if(keyCode == 13 && ans != "") {
+    answer.value("")
+    for (const block in wordBlocks) {
+      const wb = wordBlocks[block]
+      if(ans.toLowerCase() == wb.ans.toLowerCase()) {
+        wb.hidden = false
+        redrawBoard()
+      }
+    }
+  }
+}
+
 function mousePressed() {
   for (const block in wordBlocks) {
     if(wordBlocks[block].isPointInWordBlock(mouseX-tx, mouseY-ty)) {
       console.log("Highlight: ", wordBlocks[block].ans)
     }
   }
+}
+
+function newInput(x,y,width,height) {
+  i = createInput()
+  i.style('font-size:30px')
+  i.style('position:fixed')
+  i.position(x,y)
+  i.size(width,height)
+  i.elt.focus()
+  return i
 }
 
 function connectBlock(parent_ans, child_ans, skip = 0, letter = "") {
