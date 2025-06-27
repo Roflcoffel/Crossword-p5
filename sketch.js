@@ -86,7 +86,7 @@ function drawQuestions(x, y) {
 }
 
 function redrawBoard() {
-  background(255,255,255,0)
+  background(255,255,255)
   for (const block in wordBlocks) {
     if (wordBlocks[block].connected) {
       wordBlocks[block].draw(tx,ty)
@@ -129,8 +129,8 @@ function mousePressed() {
 function newInput(x,y,width,height) {
   i = createInput()
   i.style('font-size:30px')
-  i.style('position:fixed')
   i.position(x,y)
+  i.style('position:fixed')
   i.size(width,height)
   i.elt.focus()
   return i
